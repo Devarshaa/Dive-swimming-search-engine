@@ -37,7 +37,6 @@ def map_to_docs(solr_response):
                 url = result['url']
             if 'content' in result:
                 content = result['content']
-                content = content[:200]
                 content = content.replace("\n", " ")
                 content = " ".join(re.findall("[a-zA-Z]+", content))
             if 'anchor' in result:
