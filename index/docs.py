@@ -3,10 +3,10 @@ import json
 
 class Docs:
     def __init__(self, id, title, url, meta_info, anchor, rank):
-        self.id = id,
-        self.title = title,
-        self.url = url,
-        self.meta_info = meta_info,
+        self.id = id
+        self.title = title
+        self.url = url
+        self.meta_info = meta_info
         self.anchor = anchor
         self.rank = rank
 
