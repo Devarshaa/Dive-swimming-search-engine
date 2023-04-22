@@ -69,7 +69,7 @@ def compute_hits(urls):
     authority_score_file = open(authority_score_r_file_path, 'r').read()
     authority_score_json = json.loads(authority_score_file)
 
-    clust_inp = sorted(urls, key=lambda x: authority_score_json.get(x['url'], 0.0), reverse=True)
+    clust_inp = sorted(urls, key=lambda x: authority_score_json.get(x['url'][0], 0.0), reverse=True)
     return clust_inp
 
 
