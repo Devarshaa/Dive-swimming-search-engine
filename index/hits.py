@@ -59,7 +59,7 @@ def HITS():
     outlink_map = construct_outlink_map(inlink_map)
     graph = construct_networkx_graph(outlink_map)
 
-    hubs, authorities = nx.hits(graph, max_iter=100, normalized=True)
+    hubs, authorities = nx.hits(graph, max_iter=1000, normalized=True)
 
     store_json_to_file(json.dumps(hubs), hub_score_w_file_path)
     store_json_to_file(json.dumps(authorities), authority_score_w_file_path)
