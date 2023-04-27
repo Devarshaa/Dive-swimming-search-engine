@@ -20,7 +20,7 @@ def construct_outlink_map(inlink_map):
 
 
 def construct_inlink_map():
-    linkdb_inlink_file = open("../resources/dumps/linkdb_inlinks", 'r').readlines()
+    linkdb_inlink_file = open("../resources/dumps/linkdb", 'r').readlines()
 
     url_inlink_map = dict()
     inlinks = []
