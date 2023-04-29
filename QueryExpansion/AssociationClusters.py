@@ -2,7 +2,7 @@
 from collections import defaultdict
 
 from util import tokenize_and_stem
-# from index.solr_client import search
+# from indexer.solr_client import search
 
 def findAssociations(localVocab, queryStems, doc_dict):
     associations = defaultdict(int)
@@ -26,7 +26,7 @@ def expandQueryAC(query, resultSet):
     queryStems = tokenize_and_stem(query)
     for result in resultSet:
         # in solr_client, I changed line 40, result['content'] to result[content][0]
-        # when I built the index, all attributes were stored as a dict(list)
+        # when I built the indexer, all attributes were stored as a dict(list)
         doc_tokens = tokenize_and_stem(result['meta_info'])
         doc_dict[result['url'][0]] = doc_tokens
         tokens.extend(doc_tokens)
