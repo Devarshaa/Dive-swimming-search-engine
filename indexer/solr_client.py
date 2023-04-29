@@ -4,7 +4,7 @@ import re
 import pysolr
 from flask import jsonify
 
-from index.docs import Docs
+from indexer.docs import Docs
 
 solr = pysolr.Solr('http://localhost:8983/solr/nutch', always_commit=True, timeout=10)
 

@@ -1,7 +1,7 @@
 # Rocchio Algorithm for Pseudo-Relevance Feedback
 from util import tokenize_and_stem
 from collections import defaultdict
-# from index.solr_client import search
+# from indexer.solr_client import search
 
 def expandQuery(query, resultSet):
     beta = 0.6

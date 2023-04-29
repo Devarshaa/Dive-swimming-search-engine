@@ -1,6 +1,6 @@
 from util import tokenize_and_stem
 import numpy as np
-# from index.solr_client import search
+# from indexer.solr_client import search
 def findScalars(vocab, queryStems, docs):
     scalars = {}
     documents_terms = []
