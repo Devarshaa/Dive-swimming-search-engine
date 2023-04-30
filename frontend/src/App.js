@@ -8,6 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Card, CardContent } from '@material-ui/core';
 import axios from 'axios';
+import logo from './logo.png';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       ];
 
   const [value, setValue] = useState('');
+  const [showResult, setShowResult] = useState(false);
   const [queryDisabled, setQueryDisabled] = useState(false);
   const [clusterDisabled, setClusterDisabled] = useState(false);
   const [final_data, setFinalData] = useState(sampleData);
@@ -81,30 +83,14 @@ function App() {
     // Sort the documents by rank
     setFinalData(result.result)
     final_data.sort((a, b) => a.rank - b.rank);
-    
-    //// Google Search API call
-    //const googleResponse = await axios.get(
-    //    `https://www.googleapis.com/customsearch/v1?key=AIzaSyDY_PYyumfrg_4YZPRf6QUurHlHzN5nSYc&cx=YOUR_CUSTOM_SEARCH_ENGINE_ID&q=${value}`
-    //  );
-    //  setFinalDataGoogle(googleResponse.data.items);
-    
-    //  // Bing Search API call
-    //  const bingResponse = await axios.get(
-    //    `https://api.cognitive.microsoft.com/bing/v7.0/search?q=${value}`,
-    //    {
-    //      headers: {
-    //        'Ocp-Apim-Subscription-Key': 'YOUR_API_KEY'
-    //      }
-    //    }
-    //  );
-    //  setFinalDataBing(bingResponse.data.webPages.value);
+    setShowResult(true);
   }
 
   return (
     <div className="App">
-      <p>
+      {/*<p>
         <code>Dive Search Engine</code>
-      </p>
+      </p>*/}
       <header className="App-header">
       <Box
       component="form"
@@ -122,8 +108,8 @@ function App() {
       noValidate
       autoComplete="off"
     >
-          <img src="logo.png" alt="logo" style={{ marginRight: 16 }} />
-        <TextField className="search-bar" style={{ flex: 2, marginTop: 200, marginRight: 16 }} id="search" label="Enter text to search" multiline rows={value} onChange={handleTextInput} variant="outlined" color="primary"/>
+        <img src={logo} alt="logo" style={{ marginRight: 16 }} />
+        <TextField className="search-bar" style={{ flex: 2, marginRight: 16 }} id="search" label="Enter text to search" multiline rows={value} onChange={handleTextInput} variant="outlined" color="primary"/>
         <div className="config-box" style={{  width: '100%', height: '100%' }}>
         <Box style={{ flex: 1, border: '1px solid black', borderRadius: 8, padding: 16 }}>
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%' }}>
@@ -254,6 +240,9 @@ function App() {
         </Dialog>
         </Box>
         </Box>
+        {showResult && (
+        <div className="result-box" style={{ display: 'flex', width: '100%', height: '100%' }}>
+            <p>Results</p>
         <div style={{ display: 'flex', width: '100%', height: '100%' }}>
             <div className="result-box" style={{ flex: 1,  width: '100%', height: '100%' }}>
                 <Box style={{ flex: 1, marginLeft: 15, marginRight: 15, border: '1px solid black', borderRadius: 8, padding: 16 }}>
@@ -276,48 +265,6 @@ function App() {
                     ))}
                 </Box>
             </div>
-            {/*<div style={{ flex: 1,  width: '100%', height: '100%' }}>
-                <Box style={{ flex: 1, marginLeft: 15, marginRight: 15, border: '1px solid black', borderRadius: 8, padding: 16 }}>
-                <Typography variant="h6" gutterBottom color="primary">
-                  Google results
-                </Typography>
-                    {final_data_google.map((doc) => (
-                      <Card key={doc.id} style={{ marginTop: 16 }}>
-                        <CardContent>
-                          <Typography variant="h6" component="h2">
-                            <a href={doc.url} target="_blank" rel="noopener noreferrer">
-                              {doc.title}
-                            </a>
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                          {doc.meta_info.split(' ').slice(0, 20).join(' ')}...
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    ))}
-                </Box>
-            </div>
-            <div style={{ flex: 1,  width: '100%', height: '100%' }}>
-                <Box style={{ flex: 1, marginLeft: 15, marginRight: 15, border: '1px solid black', borderRadius: 8, padding: 16 }}>
-                <Typography variant="h6" gutterBottom color="primary">
-                  Bing results
-                </Typography>
-                    {final_data_bing.map((doc) => (
-                      <Card key={doc.id} style={{ marginTop: 16 }}>
-                        <CardContent>
-                          <Typography variant="h6" component="h2">
-                            <a href={doc.url} target="_blank" rel="noopener noreferrer">
-                              {doc.title}
-                            </a>
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                          {doc.meta_info.split(' ').slice(0, 20).join(' ')}...
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    ))}
-                </Box>
-            </div>*/}
             <div className="result-box" style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%', height: '100%' }}>
                 <div style={{ flex: 1, width: '100%', height: '100%' }}>
                     <Box style={{ flex: 1, border: '1px solid black', marginRight: 15, borderRadius: 8, padding: 16 }}>
@@ -336,7 +283,9 @@ function App() {
                     </Box>
                 </div>
             </div>
+            </div>
         </div>
+        )}
       </header>
     </div>
   );

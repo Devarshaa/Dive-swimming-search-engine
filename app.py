@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 import json
 from indexer.service import run as indexer_run
+from clustering.clusteringservice import run as clustering_run
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -18,8 +19,12 @@ def process_input():
     if config == 'hits':
         response = indexer_run(query)
     else:
-        if rest == 'flat_clustering' or rest == 'single_link' or rest == 'centroid':
-            print("clustering")
+        if rest == 'flat_clustering':
+            response = clustering_run(query, rest)
+        elif rest == 'single_link'
+            response = clustering_run(query, "agglomerative_clustering_single")
+        elif rest == 'centroid':
+            response = clustering_run(query, "agglomerative_clustering_complete")
         elif rest == 'rocchio_algorithm' or rest == 'associative_cluster' or rest == 'metric_cluster' or rest == 'scalar_cluster':
             print("query expansion")
         else:
