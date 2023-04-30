@@ -3,6 +3,7 @@ from flask_cors import CORS, cross_origin
 import json
 from indexer.service import run as indexer_run
 from clustering.clusteringservice import run as clustering_run
+from QueryExpansion.QEService import run as qe_run
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -25,8 +26,14 @@ def process_input():
             response = clustering_run(query, "agglomerative_clustering_single")
         elif rest == 'centroid':
             response = clustering_run(query, "agglomerative_clustering_complete")
-        elif rest == 'rocchio_algorithm' or rest == 'associative_cluster' or rest == 'metric_cluster' or rest == 'scalar_cluster':
-            print("query expansion")
+        elif rest == 'rocchio_algorithm':
+            response = qe_run(query,"pseudo_relevance_feedback")
+        elif rest == 'associative_cluster':
+            response = qe_run(query,"association_clusters")
+        elif rest == 'metric_cluster':
+            response = qe_run(query,"metric_clusters")
+        elif rest == 'scalar_cluster':
+            response = qe_run(query,"scalar_clusters")
         else:
             response = indexer_run(query, hits=False)
     return {

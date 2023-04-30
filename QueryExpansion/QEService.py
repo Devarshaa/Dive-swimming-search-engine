@@ -20,3 +20,5 @@ def run(query, rq_type):
 
 # eq, res = run('swimming medal', 'pseudo_relevance_feedback')
 # print(eq, res[0])
+
+__all__ = ['run']
