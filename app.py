@@ -18,7 +18,10 @@ def process_input():
     rest = json_data['rest']
     response = 'ok'
     if config == 'hits':
-        response = indexer_run(query)
+        response = {
+            "expanded_query": "",
+            "results": indexer_run(query),
+        }
     else:
         if rest == 'flat_clustering':
             response = clustering_run(query, rest)
@@ -35,7 +38,10 @@ def process_input():
         elif rest == 'scalar_cluster':
             response = qe_run(query,"scalar_clusters")
         else:
-            response = indexer_run(query, hits=False)
+            response = {
+                "expanded_query": "",
+                "results": indexer_run(query, hits=False),
+            }
     return {
         "result": response,
     }

@@ -16,7 +16,10 @@ def run(query, rq_type):
     elif rq_type == 'scalar_clusters':
         expanded_query = expandQuerySC(query, results)
     results = search(expanded_query, 30)
-    return (expanded_query, results)
+    return {
+        "expanded_query": expanded_query,
+        "results": results,
+    }
 
 # eq, res = run('swimming medal', 'pseudo_relevance_feedback')
 # print(eq, res[0])

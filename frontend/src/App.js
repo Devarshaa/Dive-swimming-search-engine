@@ -20,6 +20,8 @@ function App() {
 
   const [value, setValue] = useState('');
   const [showResult, setShowResult] = useState(false);
+  const [queryExpandValue, setQueryExpandValue] = useState('');
+  const [queryExpand, setQueryExpand] = useState(false);
   const [queryDisabled, setQueryDisabled] = useState(false);
   const [clusterDisabled, setClusterDisabled] = useState(false);
   const [final_data, setFinalData] = useState(sampleData);
@@ -33,6 +35,10 @@ function App() {
   const handleClear = async e => {
     setValue('');
     setFinalData([]);
+    setShowResult(false);
+    setQueryDisabled(false);
+    setClusterDisabled(false);
+
   }
 
   const handleHelp = () => {
@@ -78,10 +84,15 @@ function App() {
             body: JSON.stringify(obj)
           })
     const result = await response.json()
-          console.log(result)
+          console.log(result.result.expanded_query)
+          console.log(result.result.results)
     
+    if (Boolean(result.result.expanded_query) || result.result.expanded_query!== '') {
+        setQueryExpand(true)
+        setQueryExpandValue(result.result.expanded_query)
+    }
     // Sort the documents by rank
-    setFinalData(result.result)
+    setFinalData(result.result.results)
     final_data.sort((a, b) => a.rank - b.rank);
     setShowResult(true);
   }
@@ -243,26 +254,27 @@ function App() {
         {showResult && (
         <div className="result-box" style={{ display: 'flex', width: '100%', height: '100%' }}>
             <p>Results</p>
+            {queryExpand && (<p>Expanded query: {queryExpandValue}</p>)}
         <div style={{ display: 'flex', width: '100%', height: '100%' }}>
             <div className="result-box" style={{ flex: 1,  width: '100%', height: '100%' }}>
                 <Box style={{ flex: 1, marginLeft: 15, marginRight: 15, border: '1px solid black', borderRadius: 8, padding: 16 }}>
                 <Typography variant="h6" gutterBottom color="primary">
                   Our results
                 </Typography>
-                    {final_data.map((doc) => (
-                      <Card key={doc.id} style={{ marginTop: 16 }}>
-                        <CardContent>
-                          <Typography variant="h6" component="h2">
-                            <a href={doc.url} target="_blank" rel="noopener noreferrer">
-                              {doc.title}
-                            </a>
-                          </Typography>
-                          <Typography variant="subtitle1" color="textSecondary">
-                          {doc.meta_info.split(' ').slice(0, 20).join(' ')}...
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    ))}
+                {[...new Map(final_data.map(item => [item.title, item])).values()].map((doc) => (
+                  <Card key={doc.id} style={{ marginTop: 16 }}>
+                    <CardContent>
+                      <Typography variant="h6" component="h2">
+                        <a href={doc.url} target="_blank" rel="noopener noreferrer">
+                          {doc.title}
+                        </a>
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {doc.meta_info.split(' ').slice(0, 20).join(' ')}...
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                ))}
                 </Box>
             </div>
             <div className="result-box" style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%', height: '100%' }}>

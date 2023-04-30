@@ -60,7 +60,10 @@ def get_clustering_response(api_res, rq_type):
                         res.append({"title": rem_docs["title"], "url": rem_docs["url"],
                                            "meta_info": rem_docs["meta_info"], "rank": rem_docs["rank"]})
 
-    return res
+    return {
+        "expanded_query": "",
+        "results": res,
+    }
 
 # print(run('swimming medals','agglomerative_clustering_single')[:5])
 
