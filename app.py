@@ -24,7 +24,7 @@ def process_input():
             response = clustering_run(query, rest)
         elif rest == 'single_link':
             response = clustering_run(query, "agglomerative_clustering_single")
-        elif rest == 'centroid':
+        elif rest == 'complete_link':
             response = clustering_run(query, "agglomerative_clustering_complete")
         elif rest == 'rocchio_algorithm':
             response = qe_run(query,"pseudo_relevance_feedback")

@@ -160,9 +160,9 @@ function App() {
           disabled={clusterDisabled}
         />
         <FormControlLabel
-          value="centroid"
+          value="complete_link"
           control={<Radio color="primary"/>}
-          label="Agglomerative (Centroid)"
+          label="Agglomerative (Complete Link)"
           disabled={clusterDisabled}
         />
         </RadioGroup>
