@@ -7,19 +7,22 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Card, CardContent } from '@material-ui/core';
+import axios from 'axios';
 
 
 function App() {
     const sampleData = [
-        { id: '1', title: 'Document 1', url: 'http://example.com/document1', meta_info: 'Some meta info', anchor: ['anchor1', 'anchor2'], rank: '2' },
-        { id: '2', title: 'Document 2', url: 'http://example.com/document2', meta_info: 'Some meta info', anchor: ['anchor3', 'anchor4'], rank: '1' },
-        { id: '3', title: 'Document 3', url: 'http://example.com/document3', meta_info: 'Some meta info', anchor: ['anchor5', 'anchor6'], rank: '3' },
+        //{ id: '1', title: 'Document 1', url: 'http://example.com/document1', meta_info: 'Some meta info', anchor: ['anchor1', 'anchor2'], rank: '2' },
+        //{ id: '2', title: 'Document 2', url: 'http://example.com/document2', meta_info: 'Some meta info', anchor: ['anchor3', 'anchor4'], rank: '1' },
+        //{ id: '3', title: 'Document 3', url: 'http://example.com/document3', meta_info: 'Some meta info', anchor: ['anchor5', 'anchor6'], rank: '3' },
       ];
 
   const [value, setValue] = useState('');
   const [queryDisabled, setQueryDisabled] = useState(false);
   const [clusterDisabled, setClusterDisabled] = useState(false);
   const [final_data, setFinalData] = useState(sampleData);
+//  const [final_data_google, setFinalDataGoogle] = useState(sampleData);
+//  const [final_data_bing, setFinalDataBing] = useState(sampleData);
   const [open, setOpen] = useState(false);
 
   const iframeBingSrc = `https://www.bing.com/search?q=${value}`;
@@ -27,7 +30,7 @@ function App() {
 
   const handleClear = async e => {
     setValue('');
-    setFinalData('');
+    setFinalData([]);
   }
 
   const handleHelp = () => {
@@ -39,7 +42,7 @@ function App() {
   };
 
   const [radioValue, setRadioValue] = useState('page_ranking');
-  const [radioRestValue, setRestRadioValue] = useState('page_ranking');
+  const [radioRestValue, setRestRadioValue] = useState('');
 
   const handleRestRadioChange = (event) => {
     setRestRadioValue(event.target.value);
@@ -55,23 +58,46 @@ function App() {
         setClusterDisabled(false);
     }
   };
+  
+  const handleTextInput = (v) => {
+    setValue(v.target.value);
+  }
 
   const handleTextInputChange = async e => {
     if(value.length == 0) {
         alert("Input cannot be empty, Please enter a non-empty string!")
         return
     }
-    const response = await fetch(`http://127.0.0.1:8081/api/input`, {
+    let obj = {"config": radioValue, "rest": radioRestValue, "query":value}
+    const response = await fetch(`http://127.0.0.1:8081/api/search`, {
             method: 'POST',
             crossDomain:true,
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({data: value})
+            body: JSON.stringify(obj)
           })
     const result = await response.json()
-          console.log(result)
+          console.log(typeof result)
     
     // Sort the documents by rank
+    setFinalData(result.result)
     final_data.sort((a, b) => a.rank - b.rank);
+    
+    //// Google Search API call
+    //const googleResponse = await axios.get(
+    //    `https://www.googleapis.com/customsearch/v1?key=AIzaSyDY_PYyumfrg_4YZPRf6QUurHlHzN5nSYc&cx=YOUR_CUSTOM_SEARCH_ENGINE_ID&q=${value}`
+    //  );
+    //  setFinalDataGoogle(googleResponse.data.items);
+    
+    //  // Bing Search API call
+    //  const bingResponse = await axios.get(
+    //    `https://api.cognitive.microsoft.com/bing/v7.0/search?q=${value}`,
+    //    {
+    //      headers: {
+    //        'Ocp-Apim-Subscription-Key': 'YOUR_API_KEY'
+    //      }
+    //    }
+    //  );
+    //  setFinalDataBing(bingResponse.data.webPages.value);
   }
 
   return (
@@ -96,8 +122,9 @@ function App() {
       noValidate
       autoComplete="off"
     >
-        <TextField style={{ flex: 2, marginTop: 200, marginRight: 16 }} id="search" label="Enter text to search" multiline rows={value} variant="outlined" color="primary"/>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', height: '100%' }}>
+          <img src="logo.png" alt="logo" style={{ marginRight: 16 }} />
+        <TextField className="search-bar" style={{ flex: 2, marginTop: 200, marginRight: 16 }} id="search" label="Enter text to search" multiline rows={value} onChange={handleTextInput} variant="outlined" color="primary"/>
+        <div className="config-box" style={{  width: '100%', height: '100%' }}>
         <Box style={{ flex: 1, border: '1px solid black', borderRadius: 8, padding: 16 }}>
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100%' }}>
@@ -194,7 +221,6 @@ function App() {
         </div>
         </Box>
         </div>
-    {/*</div>*/}
         </Box>
         <Box
       component="form"
@@ -229,7 +255,7 @@ function App() {
         </Box>
         </Box>
         <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-            <div style={{ flex: 1,  width: '100%', height: '100%' }}>
+            <div className="result-box" style={{ flex: 1,  width: '100%', height: '100%' }}>
                 <Box style={{ flex: 1, marginLeft: 15, marginRight: 15, border: '1px solid black', borderRadius: 8, padding: 16 }}>
                 <Typography variant="h6" gutterBottom color="primary">
                   Our results
@@ -243,14 +269,56 @@ function App() {
                             </a>
                           </Typography>
                           <Typography variant="subtitle1" color="textSecondary">
-                            {doc.meta_info}
+                          {doc.meta_info.split(' ').slice(0, 20).join(' ')}...
                           </Typography>
                         </CardContent>
                       </Card>
                     ))}
                 </Box>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%', height: '100%' }}>
+            {/*<div style={{ flex: 1,  width: '100%', height: '100%' }}>
+                <Box style={{ flex: 1, marginLeft: 15, marginRight: 15, border: '1px solid black', borderRadius: 8, padding: 16 }}>
+                <Typography variant="h6" gutterBottom color="primary">
+                  Google results
+                </Typography>
+                    {final_data_google.map((doc) => (
+                      <Card key={doc.id} style={{ marginTop: 16 }}>
+                        <CardContent>
+                          <Typography variant="h6" component="h2">
+                            <a href={doc.url} target="_blank" rel="noopener noreferrer">
+                              {doc.title}
+                            </a>
+                          </Typography>
+                          <Typography variant="subtitle1" color="textSecondary">
+                          {doc.meta_info.split(' ').slice(0, 20).join(' ')}...
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </Box>
+            </div>
+            <div style={{ flex: 1,  width: '100%', height: '100%' }}>
+                <Box style={{ flex: 1, marginLeft: 15, marginRight: 15, border: '1px solid black', borderRadius: 8, padding: 16 }}>
+                <Typography variant="h6" gutterBottom color="primary">
+                  Bing results
+                </Typography>
+                    {final_data_bing.map((doc) => (
+                      <Card key={doc.id} style={{ marginTop: 16 }}>
+                        <CardContent>
+                          <Typography variant="h6" component="h2">
+                            <a href={doc.url} target="_blank" rel="noopener noreferrer">
+                              {doc.title}
+                            </a>
+                          </Typography>
+                          <Typography variant="subtitle1" color="textSecondary">
+                          {doc.meta_info.split(' ').slice(0, 20).join(' ')}...
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </Box>
+            </div>*/}
+            <div className="result-box" style={{ display: 'flex', flexDirection: 'column', flex: 1, width: '100%', height: '100%' }}>
                 <div style={{ flex: 1, width: '100%', height: '100%' }}>
                     <Box style={{ flex: 1, border: '1px solid black', marginRight: 15, borderRadius: 8, padding: 16 }}>
                     <Typography variant="h6" gutterBottom color="primary">

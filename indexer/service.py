@@ -13,3 +13,5 @@ def run(query, result_size=30, hits=False):
         hits_response = compute_hits(page_ranked_response)
 
     return hits_response if hits else page_ranked_response
+
+__all__ = ['run']

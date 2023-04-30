@@ -12,6 +12,7 @@
         "@testing-library/user-event": "^13.5.0",
         "@types/react-helmet": "^6.1.6",
         "assert": "^2.0.0",
+        "axios": "^1.4.0",
         "browserify-zlib": "^0.2.0",
         "buffer": "^6.0.3",
         "crypto": "^1.0.1",

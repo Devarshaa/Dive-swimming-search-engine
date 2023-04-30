@@ -11,12 +11,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const csp = `
   default-src 'self';
-  frame-src 'self' https://www.google.com;
-  script-src 'self' https://www.google.com;
+  frame-src 'self' https://www.google.com https://www.bing.com;
+  script-src 'self' https://www.google.com https://www.bing.com;
   style-src 'self' 'unsafe-inline';
   img-src 'self' data:;
   font-src 'self';
-  connect-src 'self';
+  connect-src 'self' http://127.0.0.1:8081;
 `;
 
 root.render(
