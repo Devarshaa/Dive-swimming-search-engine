@@ -78,7 +78,7 @@ function App() {
             body: JSON.stringify(obj)
           })
     const result = await response.json()
-          console.log(typeof result)
+          console.log(result)
     
     // Sort the documents by rank
     setFinalData(result.result)

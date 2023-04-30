@@ -14,15 +14,15 @@ def run(query, rq_type):
 def get_clustering_response(api_res, rq_type):
     precomp_cluster_res  = dict()
     if rq_type == 'flat_clustering':
-        f = open('./precomputed_clusters/clustering_f.txt')
+        f = open('./clustering/precomputed_clusters/clustering_f.txt')
         lines = f.readlines()
         f.close()
     elif rq_type == 'agglomerative_clustering_single':
-        f = open('./precomputed_clusters/clustering_hs.txt')
+        f = open('./clustering/precomputed_clusters/clustering_hs.txt')
         lines = f.readlines()
         f.close()
     elif rq_type == 'agglomerative_clustering_complete':
-        f = open('./precomputed_clusters/clustering_hc.txt')
+        f = open('./clustering/precomputed_clusters/clustering_hc.txt')
         lines = f.readlines()
         f.close()
 

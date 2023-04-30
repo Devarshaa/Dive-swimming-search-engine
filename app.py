@@ -22,7 +22,7 @@ def process_input():
     else:
         if rest == 'flat_clustering':
             response = clustering_run(query, rest)
-        elif rest == 'single_link'
+        elif rest == 'single_link':
             response = clustering_run(query, "agglomerative_clustering_single")
         elif rest == 'centroid':
             response = clustering_run(query, "agglomerative_clustering_complete")
