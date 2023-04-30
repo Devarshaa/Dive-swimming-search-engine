@@ -38,7 +38,7 @@ def construct_inlink_map():
 
 
 def construct_networkx_graph(url_map):
-    G = nx.Graph()
+    G = nx.DiGraph()
     edges = list()
     for u in url_map:
         links = url_map[u]
