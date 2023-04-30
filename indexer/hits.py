@@ -4,7 +4,7 @@ import networkx as nx
 
 hub_score_w_file_path = "../resources/precomputed/hits_hubs_scores"
 authority_score_w_file_path = "../resources/precomputed/hits_authority_scores"
-authority_score_r_file_path = "resources/precomputed/hits_authority_scores"
+authority_score_r_file_path = "../resources/precomputed/hits_authority_scores"
 
 
 def construct_outlink_map(inlink_map):
