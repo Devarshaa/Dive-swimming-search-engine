@@ -6,7 +6,7 @@ from flask import jsonify
 
 from indexer.docs import Docs
 
-solr = pysolr.Solr('https://5ea4-153-33-34-32.ngrok-free.app/solr/nutch', always_commit=True, timeout=10)
+solr = pysolr.Solr('https://462b-66-253-176-22.ngrok-free.app/solr/nutch', always_commit=True, timeout=10)
 
 
 def search(query, no_of_rows=20):
