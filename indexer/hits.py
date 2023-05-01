@@ -1,4 +1,5 @@
 import json
+import os
 
 import networkx as nx
 
@@ -66,7 +67,9 @@ def HITS():
 
 
 def compute_hits(urls):
-    authority_score_file = open(authority_score_r_file_path, 'r').read()
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    path = os.path.join(my_path, authority_score_r_file_path)
+    authority_score_file = open(path, 'r').read()
     authority_score_json = json.loads(authority_score_file)
 
     clust_inp = sorted(urls, key=lambda x: authority_score_json.get(x['url'], 0.0), reverse=True)
