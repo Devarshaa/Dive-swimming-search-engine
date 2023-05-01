@@ -56,13 +56,13 @@ def analyze_hits_scores():
     sorted_authorities = sorted(authorities.items(), key=operator.itemgetter(1), reverse=True)
 
     # print the top 10 hubs and their scores
-    # print("Top 10 Hubs:")
-    # for hub in sorted_hubs[:100]:
-    #     print(f"{hub[0]}: {hub[1]}")
+    print("Top 10 Hubs:")
+    for hub in sorted_hubs[:100]:
+        print(f"{hub[0]}: {hub[1]}")
 
     # print the top authority and its score
     print("Top 10 Authorities:")
-    for hub in sorted_authorities[100:200]:
+    for hub in sorted_authorities[10]:
         print(f"{hub[0]}: {hub[1]}")
 
 
