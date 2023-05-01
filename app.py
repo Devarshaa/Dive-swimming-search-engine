@@ -20,7 +20,7 @@ def process_input():
     if config == 'hits':
         response = {
             "expanded_query": "",
-            "results": indexer_run(query, hits=True),
+            "results": indexer_run(query, result_size=100, hits=True),
         }
     else:
         if rest == 'flat_clustering':
@@ -40,7 +40,7 @@ def process_input():
         else:
             response = {
                 "expanded_query": "",
-                "results": indexer_run(query),
+                "results": indexer_run(query, hits=False),
             }
     return {
         "result": response,
